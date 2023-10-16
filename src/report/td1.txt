@@ -1,0 +1,59 @@
+Rapport sur le développement du modèle de prédiction des vidéos comiques
+
+I - Is_comic : traitement pre-processing
+Nous utilisons le nom des vidéos comme principale caractéristique pour prédire si une vidéo est comique ou non. 
+Lors de la tokenisation, nous avons choisi de pouvoir transformer nos caractères en minuscule, d'enlever les accents et retirer les stopwords.
+Pour traduire nos données textuelles en données exploitables, nous utiliserons CountVectorizer et TfidfVectorizer. 
+Ensuite nous terminons par la lemmatization ou le stemming. 
+
+Modélisation :
+Enfin nous appliquons un modèle de machine learning, nous avons choisi les suivants : 
+-Régression logistique 
+-Random Forest 
+-SVM
+-Naive Bayes
+
+Hypothèses : 
+- Nous avions supposé que le Random Forest serait le meilleur modèle car il capture les interactions plus complexes que les mots pourraient avoir, notamment grâce au bootstraping et au bagging. 
+- Comme vu en cours, les majuscules présentes dans les titres pourraient avoir un impact sur les performances du modèle, c'est pourquoi nous avons choisi d'effectuer des tests sans les accents pour le prouver. 
+Nous souhaitons vérifier pour les accents également. 
+- L'impact de CountVectorizer et TfidfVectorizer peut être différent selon les modèles, tout comme la lemmatization ou le stemming
+
+Résultats CountVectorizer :
+-Régression logistique (tout minuscule / sans accent): 92.56% (Lemmatization), 92.07% (Stemming)
+-Régression logistique (sans accent): 93.13% (Lemmatization), 92.85% (Stemming)
+-Régression logistique (avec accent): 93.28% (Lemmatization), 92.85% (Stemming)
+
+-Random Forest (tout minuscule / sans accent): 92.13% (Lemmatization), 92.42% (Stemming)
+-Random Forest (sans accent): 93.13% (Lemmatization), 92.41% (Stemming)
+-Random Forest (avec accent): 93.85% (Lemmatization), 91.99% (Stemming)
+
+-Support Vector Machine (SVM) (tout minuscule / sans accent): 92.27% (Lemmatization), 92.56% (Stemming)
+-Support Vector Machine (SVM) (sans accent): 93.27% (Lemmatization), 92.70% (Stemming)
+-Support Vector Machine (SVM) (avec accent): 93.27% (Lemmatization), 92.70% (Stemming)
+
+-Naive Bayes (tout minuscule / sans accent): 93.13% (Lemmatization), 92.70% (Stemming)
+-Naive Bayes (sans accent): 94.13% (Lemmatization), 93.13% (Stemming)
+-Naive Bayes (avec accent): 93.85% (Lemmatization), 93.13% (Stemming)
+
+Résultats TfidfVectorizer :
+Régression logistique : 87.98%
+Random Forest : 93.84%
+Support Vector Machine : 91.99%
+Naive Bayes : 85.83%
+
+Classement : 
+1. Naive Bayes (sans accent): 94.13% (Lemmatization)
+2. Random Forest (avec accent): 93.85% (Lemmatization)
+3. Régression logistique (avec accent): 93.28% (Lemmatization)
+4. Support Vector Machine (SVM) (sans accent & avec accent): 93.27% (Lemmatization)
+
+Les meilleurs résultats pour chaques modèles ont une similitude, ils ont conservé les majuscules dans les titres. 
+Pour Naive Bayes la différence est de 1% avec et sans les majuscules. 
+Nous remarquons aussi que le Stemming est généralement moins bon que la Lemmatization. 
+A part Random Forest, les autres modèles connaissent une baisse significative de leurs performances avec TfidfVectorizer.
+Lorsqu'on fait du stemming avec ou sans accent, la différence de performances est quasi nulle à part pour Random Forest. 
+
+Meilleurs paramètres : 
+- Avec accent (sauf Naive Bayes)
+- Lemmatization
